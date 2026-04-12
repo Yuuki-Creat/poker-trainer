@@ -9,7 +9,7 @@
       <PokerTable 
         v-if="currentScenario"
         :scenario="currentScenario" 
-        @action="submitAction"
+        @action="sendAction"
       />
       
       <div v-else class="text-white animate-pulse">
@@ -45,7 +45,7 @@ const fetchScenario = async () => {
     currentScenario.value = await res.json();
 };
 
-const submitAction = async (action) => {
+const sendAction = async (action) => {
     const res = await fetch(`${baseUrl}/api/evaluate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

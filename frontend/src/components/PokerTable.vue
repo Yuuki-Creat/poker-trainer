@@ -27,7 +27,7 @@
     </div>
 
     <div class="grid grid-cols-3 gap-3 w-full max-w-md pb-8">
-      <button v-for="btn in actions" :key="btn" @click="sendAction(btn)" 
+      <button v-for="btn in actions" :key="btn" @click="submitAction(btn)" 
         class="bg-slate-100 text-slate-900 py-4 rounded-2xl font-black text-lg active:scale-95 transition-transform hover:bg-white">
         {{ btn }}
       </button>
@@ -47,13 +47,13 @@ const selectedStrategy = ref('TAG');
 const result = ref(null);
 const actions = ['FOLD', 'CHECK', 'CALL', 'BET', 'RAISE'];
 
-const fetchNext = async () => {
-    result.value = null;
-    const res = await fetch(`/api/scenarios/${currentId.value}`);
-    scenario.value = await res.json();
-};
+// const fetchNext = async () => {
+//     result.value = null;
+//     const res = await fetch(`/api/scenarios/${currentId.value}`);
+//     scenario.value = await res.json();
+// };
 
-const sendAction = async (act) => {
+const submitAction = async (act) => {
     const res = await fetch('/api/evaluate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
