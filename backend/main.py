@@ -1,8 +1,8 @@
 from fastapi import FastAPI, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
-from .models import ActionRequest, EvaluationResponse
-from .engine import StrategyEngine
-from .storage import storage
+from models import ActionRequest, EvaluationResponse
+from engine import StrategyEngine
+from storage import storage
 
 app = FastAPI()
 
