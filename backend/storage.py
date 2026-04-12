@@ -5,7 +5,7 @@ import os
 
 class GistStorage:
     def __init__(self, gist_url: str):
-        self.gist_url = os.getenv("RAW_GIST_URL")
+        self.gist_url = gist_url
         self._cache: List[Dict] = []
 
     async def reload_scenarios(self):
