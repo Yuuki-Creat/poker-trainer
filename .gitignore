@@ -20,3 +20,9 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+# generated scenarios
+generate_scenarios.py
+# generate scenarios output
+scenarios.json
+# .environment file
+.env
