@@ -38,12 +38,12 @@ const result = ref(null);
 const currentId = ref(1);
 
 const fetchScenario = async (id) => {
-    const res = await fetch(`${API_BASE}/scenarios/${id}`);
+    const res = await fetch(`${API_BASE}/api/scenarios/${id}`);
     currentScenario.value = await res.json();
 };
 
 const submitAction = async (action) => {
-    const res = await fetch(`${API_BASE}/evaluate`, {
+    const res = await fetch(`${API_BASE}/api/evaluate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
