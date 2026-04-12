@@ -12,6 +12,6 @@
 </template>
 
 <script setup>
-defineProps = (['modelValue']);
-defineEmits = (['update.modelValue']);
+const props = defineProps(['modelValue']);
+const emit = defineEmits(['update:modelValue']);
 </script>
