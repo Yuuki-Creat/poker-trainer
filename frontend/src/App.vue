@@ -32,19 +32,21 @@ import StrategyPicker from './components/StrategyPicker.vue';
 import ResultOverlay from './components/ResultOverlay.vue';
 
 const API_BASE = import.meta.env.VITE_BASE_URL;
+const baseUrl = API_BASE.replace(/\/$/, "");
 const currentScenario = ref(null);
 const currentStrategy = ref('TAG');
 const result = ref(null);
 const currentId = ref(1);
 
+
 const fetchScenario = async (id) => {
-    const res = await fetch(`${API_BASE}/api/scenarios/${id}`);
-    console.log(API_BASE)
+    const res = await fetch(`${baseUrl}/api/scenarios/${id}`);
+    // console.log(API_BASE)
     currentScenario.value = await res.json();
 };
 
 const submitAction = async (action) => {
-    const res = await fetch(`${API_BASE}/api/evaluate`, {
+    const res = await fetch(`${baseUrl}/api/evaluate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -57,8 +59,8 @@ const submitAction = async (action) => {
 }
 
 const loadNext = () => {
-    if (result.value.next_scenario_id) {
-        currentId.value = result.value.next_id;
+    if (result.value && result.value.next_scenario_id) {
+        currentId.value = result.value.next_scenario_id;
         fetchScenario(currentId.value)
     }
     result.value = null;
