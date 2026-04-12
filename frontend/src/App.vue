@@ -56,7 +56,7 @@ const submitAction = async (action) => {
 }
 
 const loadNext = () => {
-    if (result.value.next_id) {
+    if (result.value.next_scenario_id) {
         currentId.value = result.value.next_id;
         fetchScenario(currentId.value)
     }
