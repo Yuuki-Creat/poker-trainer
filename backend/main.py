@@ -31,7 +31,7 @@ async def evaluate(req: ActionRequest):
         "next_scenario_id": req.scenario_id + 1 if req.scenario_id < 100 else None
     }
 
-@app.get("/api/scenario/{scenario_id}")
+@app.get("/api/scenarios/{scenario_id}")
 async def get_scenario(scenario_id: int):
     return storage.get_by_id(scenario_id)
 
