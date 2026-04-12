@@ -49,7 +49,7 @@ const actions = ['FOLD', 'CHECK', 'CALL', 'BET', 'RAISE'];
 
 const fetchNext = async () => {
     result.value = null;
-    const res = await fetch(`/api/scenario/${currentId.value}`);
+    const res = await fetch(`/api/scenarios/${currentId.value}`);
     scenario.value = await res.json();
 };
 
