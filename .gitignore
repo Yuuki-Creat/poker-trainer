@@ -26,3 +26,5 @@ generate_scenarios.py
 scenarios.json
 # .environment file
 .env
+# node_modules
+node_modules
