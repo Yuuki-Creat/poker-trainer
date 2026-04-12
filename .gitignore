@@ -24,7 +24,5 @@ TestResults.xml
 generate_scenarios.py
 # generate scenarios output
 scenarios.json
-# .environment file
-.env
 # node_modules
 node_modules
