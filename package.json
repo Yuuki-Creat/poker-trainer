@@ -1,0 +1,21 @@
+{
+  "name": "poker-trainer",
+  "version": "1.0.0",
+  "description": "poker-trainer/\r ├── backend/\r │   ├── main.py            # FastAPIエントリーポイント・ルーティング\r │   ├── models.py          # リクエスト/レスポンスの型定義\r │   ├── engine.py          # 戦略評価ロジック（コア）\r │   ├── scenarios.py       # 100ハンド分のシナリオデータ\r │   └── storage.py         # GitHub Gist 連携\r ├── frontend/\r │   ├── src/\r │   │   ├── components/\r │   │   │   ├── PokerTable.vue      # 描画（レスポンシブ）\r │   │   │   ├── StrategyPicker.vue  # 戦略選択\r │   │   │   └── ResultOverlay.vue   # 評価結果表示\r │   │   ├── App.vue\r │   │   └── main.js\r │   └── index.html\r └── requirements.txt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yuuki-Creat/poker-trainer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Yuuki-Creat/poker-trainer/issues"
+  },
+  "homepage": "https://github.com/Yuuki-Creat/poker-trainer#readme"
+}
