@@ -1,5 +1,5 @@
 {
-  "name": "poker-training-front",
+  "name": "poker-trainer-front",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
