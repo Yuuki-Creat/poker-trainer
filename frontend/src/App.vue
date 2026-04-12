@@ -39,6 +39,7 @@ const currentId = ref(1);
 
 const fetchScenario = async (id) => {
     const res = await fetch(`${API_BASE}/api/scenarios/${id}`);
+    console.log(API_BASE)
     currentScenario.value = await res.json();
 };
 
