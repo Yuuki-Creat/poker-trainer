@@ -1,6 +1,7 @@
 class StrategyEngine:
     @staticmethod
     def evaluate(user_action: str, scenario: dict, strategy: str) -> dict:
+        print(f"DEBUG: scenario keys: {list(scenario.keys())}")
         all_solutions = scenario.get("solutions")
         
         if not all_solutions:
