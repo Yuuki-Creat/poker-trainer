@@ -8,7 +8,7 @@
       <h2 class="text-5xl font-black text-slate-900 mb-2">{{ result.score }}</h2>
       
       <p class="text-sm text-slate-500 mb-6 leading-relaxed">
-        {{ result.explanation }}
+        {{ result.feedback }}
       </p>
       
       <button 

@@ -8,7 +8,7 @@ class StrategyEngine:
             return {
                 "status": "ERROR",
                 "score": 0,
-                "explanation": "Scenario data error: 'solutions' key not found.",
+                "feedback": "Scenario data error: 'solutions' key not found.",
             }
         
         # 指定された戦略（TAG/GTO等）の正解を取得。なければGTO、それもなければFOLD
@@ -19,18 +19,18 @@ class StrategyEngine:
             return {
                 "status": "GOOD",
                 "score": 100,
-                "explanation": "Excellent! Your action is optimal for this scenario.",
+                "feedback": "Excellent! Your action is optimal for this scenario.",
             }
         
         if user_action != "FOLD" and correct_action == "FOLD":
             return {
                 "status": "NEUTRAL",
                 "score": 50,
-                "explanation": "Not bad, but folding would have been the best choice here.",
+                "feedback": "Not bad, but folding would have been the best choice here.",
             }
         
         return {
             "status": "BAD",
             "score": 0,
-            "explanation": f"Not optimal. The best action for {strategy} is {correct_action}.",
+            "feedback": f"Not optimal. The best action for {strategy} is {correct_action}.",
         }
