@@ -57,7 +57,7 @@ const submitAction = async (action) => {
       body: JSON.stringify({
         scenario_id: currentScenario.value.id,
         user_action: action,
-        strategy_type: currentStrategy.ref || currentStrategy.value // refの考慮
+        strategy_type: currentStrategy.value
       })
     });
     if (!res.ok) throw new Error("Evaluation failed");
