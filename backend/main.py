@@ -35,8 +35,8 @@ async def evaluate(req: ActionRequest):
     }
 
 @app.get("/api/scenarios")
-async def get_scenario(scenario_id: int):
-    return storage.get_by_id(scenario_id)
+async def get_scenario():
+    return storage.get_all()
 
 @app.post("/api/admin/reload")
 async def reload_data(background_tasks: BackgroundTasks):
