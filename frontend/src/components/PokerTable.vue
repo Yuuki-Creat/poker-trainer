@@ -41,7 +41,7 @@ const formatCard = (cardStr) => {
       </div>
 
       <div class="flex space-x-3 z-10">
-        <div v-for="(cardStr, index) in (hand.length > 0 ? hand : scenario.hand)" :key="index" 
+        <div v-for="(cardStr, index) in scenario.hand" :key="index"
              class="w-16 h-24 bg-white rounded-lg flex flex-col items-center justify-center shadow-xl border border-slate-200">
           <template v-if="cardStr">
             <span class="text-2xl font-black leading-none" :class="formatCard(cardStr).color">
