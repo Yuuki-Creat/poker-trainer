@@ -14,6 +14,7 @@ const emit = defineEmits(['action'])
 
 const formatCard = (cardStr) => {
   if (!cardStr || cardStr.length < 2) return { value: '', symbol: '', color: '' }
+
   const suitMap = {
     's': { symbol: '♠', color: 'text-slate-900' }, 
     'h': { symbol: '♥', color: 'text-red-500' }, 
@@ -31,10 +32,10 @@ const formatCard = (cardStr) => {
 
 <template>
   <div v-if="scenario" class="max-w-md mx-auto p-4">
-    
+
     <div class="aspect-video bg-emerald-800 rounded-[100px] border-[12px] border-slate-700 relative flex items-center justify-center shadow-2xl mb-8">
       <div class="absolute inset-4 border-2 border-emerald-700/50 rounded-[80px]"></div>
-      
+
       <div class="absolute top-6 right-8 bg-blue-600 px-3 py-1 rounded text-[10px] font-black uppercase text-white shadow-lg">
         {{ scenario.phase }}
       </div>
