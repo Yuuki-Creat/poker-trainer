@@ -3,8 +3,14 @@ const props = defineProps({
   scenario: {
     type: Object,
     default: null
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 });
+
+const emit = defineEmits(['action'])
 
 const formatCard = (cardStr) => {
   if (!cardStr || cardStr.length < 2) return { value: '', symbol: '', color: '' }
@@ -24,15 +30,18 @@ const formatCard = (cardStr) => {
 </script>
 
 <template>
-  <div v-if="scenario && scenario.hand" class="max-w-md mx-auto">
+  <div v-if="scenario" class="max-w-md mx-auto p-4">
     
-    <div class="aspect-video bg-emerald-800 rounded-[100px] border-[12px] border-slate-700 relative flex items-center justify-center shadow-2xl overflow-hidden">
+    <div class="aspect-video bg-emerald-800 rounded-[100px] border-[12px] border-slate-700 relative flex items-center justify-center shadow-2xl mb-8">
       <div class="absolute inset-4 border-2 border-emerald-700/50 rounded-[80px]"></div>
       
+      <div class="absolute top-6 right-8 bg-blue-600 px-3 py-1 rounded text-[10px] font-black uppercase text-white shadow-lg">
+        {{ scenario.phase }}
+      </div>
+
       <div class="flex space-x-3 z-10">
         <div v-for="(cardStr, index) in scenario.hand" :key="index" 
-             class="w-16 h-24 bg-white rounded-lg flex flex-col items-center justify-center shadow-xl border border-slate-200 transform hover:scale-105 transition-transform">
-          
+             class="w-16 h-24 bg-white rounded-lg flex flex-col items-center justify-center shadow-xl border border-slate-200">
           <template v-if="cardStr">
             <span class="text-2xl font-black leading-none" :class="formatCard(cardStr).color">
               {{ formatCard(cardStr).value }}
@@ -45,13 +54,28 @@ const formatCard = (cardStr) => {
       </div>
 
       <div class="absolute bottom-6 bg-slate-900/80 px-4 py-1 rounded-full border border-slate-600">
-        <span class="text-xs font-bold text-slate-300 uppercase">Position:</span>
+        <span class="text-xs font-bold text-slate-300 uppercase tracking-tighter">Position:</span>
         <span class="ml-2 text-sm font-black text-white">{{ scenario.position }}</span>
       </div>
     </div>
+
+    <div class="grid grid-cols-3 gap-3">
+      <button 
+        v-for="btnAction in ['FOLD', 'CHECK', 'CALL', 'BET', 'RAISE']" 
+        :key="btnAction"
+        @click="emit('action', btnAction)"
+        :disabled="disabled"
+        class="py-4 rounded-xl font-black transition-all active:scale-95 disabled:opacity-30 shadow-md border-b-4 border-slate-300 active:border-b-0"
+        :class="btnAction === 'FOLD' ? 'bg-slate-700 text-white border-slate-900' : 'bg-slate-100 text-slate-900'"
+      >
+        {{ btnAction }}
+      </button>
+    </div>
+
   </div>
 
-  <div v-else class="h-64 flex items-center justify-center text-slate-500 italic">
+  <div v-else class="h-64 flex flex-col items-center justify-center text-slate-500 italic">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-4"></div>
     Shuffling cards...
   </div>
 </template>
