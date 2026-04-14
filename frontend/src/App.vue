@@ -85,8 +85,8 @@ onMounted(fetchScenarios);
     <div v-if="currentScenario" class="relative">
       <PokerTable 
         :scenario="currentScenario" 
+        :hand="currentHand"
         @action="submitAction" 
-        :disabled="!!result || isGameOver"
       />
       
       <ResultOverlay 

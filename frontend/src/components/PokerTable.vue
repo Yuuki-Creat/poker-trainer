@@ -15,10 +15,10 @@ const emit = defineEmits(['action'])
 const formatCard = (cardStr) => {
   if (!cardStr || cardStr.length < 2) return { value: '', symbol: '', color: '' }
   const suitMap = {
-    's': { symbol: '♠', color: 'text-white' }, 
+    's': { symbol: '♠', color: 'text-slate-900' }, 
     'h': { symbol: '♥', color: 'text-red-500' }, 
     'd': { symbol: '♦', color: 'text-red-500' }, 
-    'c': { symbol: '♣', color: 'text-white' }
+    'c': { symbol: '♣', color: 'text-slate-900' }
   };
 
   const value = cardStr.slice(0, -1).toUpperCase();
@@ -40,7 +40,7 @@ const formatCard = (cardStr) => {
       </div>
 
       <div class="flex space-x-3 z-10">
-        <div v-for="(cardStr, index) in scenario.hand" :key="index" 
+        <div v-for="(cardStr, index) in (hand.length > 0 ? hand : scenario.hand)" :key="index" 
              class="w-16 h-24 bg-white rounded-lg flex flex-col items-center justify-center shadow-xl border border-slate-200">
           <template v-if="cardStr">
             <span class="text-2xl font-black leading-none" :class="formatCard(cardStr).color">
