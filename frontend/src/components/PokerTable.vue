@@ -21,7 +21,7 @@ const formatCard = (cardStr) => {
     'c': { symbol: '♣', color: 'text-white' }
   };
 
-  const value = cardStr.slice(0, -1).toUpperCase(); // 数字（10なども考慮）
+  const value = cardStr.slice(0, -1).toUpperCase();
   const suitKey = cardStr.slice(-1).toLowerCase();
   const suit = suitMap[suitKey] || { symbol: '?', color: 'text-gray-400' };
 
