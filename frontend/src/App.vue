@@ -1,51 +1,43 @@
-<template>
-  <div class="min-h-screen flex flex-col items-center bg-slate-900">
-    <header class="w-full p-4 bg-slate-800 text-white flex justify-between items-center shadow-lg">
-      <h1 class="font-bold text-xl">TAG Poker Trainer</h1>
-      <StrategyPicker v-model="currentStrategy" />
-    </header>
-
-    <main class="flex-1 w-full max-w-4xl p-4 flex flex-col items-center justify-center">
-      <PokerTable 
-        v-if="currentScenario"
-        :scenario="currentScenario" 
-        :current-id="currentId"
-        :selected-strategy="currentStrategy"
-        :result="result"
-        @action="submitAction"
-        @next="loadNext"
-      />
-      
-      <div v-else class="text-white animate-pulse text-xl">
-        Loading Scenario...
-      </div>
-    </main>
-  </div>
-</template>
-
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import PokerTable from './components/PokerTable.vue';
 import StrategyPicker from './components/StrategyPicker.vue';
+import ResultOverlay from './components/ResultOverlay.vue';
 
 // 環境変数からベースURLを取得し、末尾のスラッシュを削除
 const API_BASE = import.meta.env.VITE_BASE_URL || "";
 const baseUrl = API_BASE.replace(/\/$/, "");
-
+const scenarios = ref([]);
 const currentScenario = ref(null);
 const currentStrategy = ref('TAG');
 const result = ref(null);
-const currentId = ref(1);
+
+const stats = ref({
+  currentHand: 0,
+  totalScore: 0,
+  history: []
+});
+
+const isGameOver = computed(() => stats.value.currentHand >= 100);
 
 // シナリオ取得
-const fetchScenario = async () => {
+const fetchScenarios = async () => {
   try {
-    const res = await fetch(`${baseUrl}/api/scenarios/${currentId.value}`);
-    if (!res.ok) throw new Error("Failed to fetch scenario");
-    currentScenario.value = await res.json();
+    const res = await fetch(`${baseUrl}/api/scenarios`);
+    scenarios.value = await res.json();
+    nextHand();
   } catch (err) {
-    console.error("Fetch error:", err);
+    console.error("Failed to Fetch scenarios:", err);
   }
+};
+
+const nextHand = () => {
+  if (isGameOver.value) return;
+
+  const randomIndex = Math.floor(Math.random() * scenarios.value.length);
+  currentScenario.value = scenarios.value[randomIndex];
+  result.value = null;
+  stats.value.currentHand++;
 };
 
 // アクション送信（判定）
@@ -60,22 +52,61 @@ const submitAction = async (action) => {
         strategy_type: currentStrategy.value
       })
     });
-    if (!res.ok) throw new Error("Evaluation failed");
-    result.value = await res.json();
+
+    const data = await res.json();
+    result.value = data;
+
+    stats.value.totalScore += data.score;
   } catch (err) {
     console.error("Submit error:", err);
   }
 };
 
-// 次のハンドへ進む
-const loadNext = () => {
-  if (result.value && result.value.next_scenario_id) {
-    currentId.value = result.value.next_scenario_id;
-    currentScenario.value = null; // ローディング表示にするため一旦クリア
-    fetchScenario();
-  }
-  result.value = null; // 結果モーダルを閉じる
-};
-
-onMounted(fetchScenario);
+onMounted(fetchScenarios);
 </script>
+
+<template>
+  <div class="min-h-screen bg-slate-900 text-white p-4">
+    <div class="max-w-md mx-auto mb-4 flex justify-between items-center bg-slate-800 p-3 rounded-xl border border-slate-700">
+      <div>
+        <p class="text-xs text-slate-400">Hand</p>
+        <p class="font-mono text-lg">{{ stats.currentHand }} / 100</p>
+      </div>
+      <div class="text-right">
+        <p class="text-xs text-slate-400">Total Score</p>
+        <p class="font-mono text-lg text-yellow-400">{{ stats.totalScore }}</p>
+      </div>
+    </div>
+
+    <div class="flex justify-center mb-6">
+      <StrategyPicker v-model="currentStrategy" />
+    </div>
+
+    <div v-if="currentScenario" class="relative">
+      <PokerTable 
+        :scenario="currentScenario" 
+        @action="submitAction" 
+        :disabled="!!result || isGameOver"
+      />
+      
+      <ResultOverlay 
+        v-if="result" 
+        :result="result" 
+        :is-last="isGameOver"
+        @next="nextHand" 
+      />
+    </div>
+
+    <div v-if="isGameOver && !result" class="fixed inset-0 bg-slate-900/95 flex flex-col items-center justify-center p-6 z-50 text-center">
+      <h2 class="text-4xl font-black mb-2 text-blue-400">SESSION COMPLETE</h2>
+      <p class="text-slate-400 mb-8">100ハンドのトレーニングが終了しました</p>
+      <div class="bg-slate-800 p-8 rounded-2xl border-2 border-blue-500 mb-8 w-full max-w-sm">
+        <p class="text-sm text-slate-400 uppercase tracking-widest">Final Score</p>
+        <p class="text-6xl font-mono font-bold text-white">{{ stats.totalScore }}</p>
+      </div>
+      <button @click="location.reload()" class="bg-blue-600 hover:bg-blue-500 px-8 py-4 rounded-full font-bold text-xl transition-all shadow-lg shadow-blue-900/20">
+        RETRY SESSION
+      </button>
+    </div>
+  </div>
+</template>

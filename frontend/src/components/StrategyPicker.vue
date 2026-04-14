@@ -1,3 +1,16 @@
+<script setup>
+// Props の型定義を明示的に行う（推奨）
+defineProps({
+  modelValue: {
+    type: String,
+    default: 'TAG'
+  }
+});
+
+// Emit の定義
+defineEmits(['update:modelValue']);
+</script>
+
 <template>
   <div class="flex bg-slate-700 rounded-lg p-1 space-x-1 text-xs md:text-sm shadow-inner">
     <button
@@ -13,16 +26,3 @@
     </button>
   </div>
 </template>
-
-<script setup>
-// Props の型定義を明示的に行う（推奨）
-defineProps({
-  modelValue: {
-    type: String,
-    default: 'TAG'
-  }
-});
-
-// Emit の定義
-defineEmits(['update:modelValue']);
-</script>

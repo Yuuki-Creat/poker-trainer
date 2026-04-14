@@ -1,3 +1,24 @@
+<script setup>
+import { computed } from 'vue';
+
+// 親から 'result' という名前で受け取る
+const props = defineProps({
+  result: {
+    type: Object,
+    required: true
+  }
+});
+
+defineEmits(['next']);
+
+const statusClass = computed(() => {
+  if (!props.result) return '';
+  if (props.result.score === 100) return 'bg-green-100 text-green-700';
+  if (props.result.score > 0) return 'bg-yellow-100 text-yellow-700';
+  return 'bg-red-100 text-red-700';
+});
+</script>
+
 <template>
   <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
     <div class="bg-white w-full max-w-sm rounded-3xl p-8 text-center shadow-2xl transform transition-all scale-100">
@@ -20,24 +41,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { computed } from 'vue';
-
-// 親から 'result' という名前で受け取る
-const props = defineProps({
-  result: {
-    type: Object,
-    required: true
-  }
-});
-
-defineEmits(['next']);
-
-const statusClass = computed(() => {
-  if (!props.result) return '';
-  if (props.result.score === 100) return 'bg-green-100 text-green-700';
-  if (props.result.score > 0) return 'bg-yellow-100 text-yellow-700';
-  return 'bg-red-100 text-red-700';
-});
-</script>

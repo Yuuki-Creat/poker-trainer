@@ -1,64 +1,51 @@
+<script setup>
+const props = defineProps(['scenario', 'disabled']);
+const emit = defineEmits(['action']);
+
+const formatCard = (cardStr) => {
+  const suitMap = {
+    's': { symbol: '♠', color: 'text-white' }, 
+    'h': { symbol: '♥', color: 'text-red-500' }, 
+    'd': { symbol: '♦', color: 'text-red-500' }, 
+    'c': { symbol: '♣', color: 'text-white' }
+  };
+  const value = cardStr.slice(0, -1);
+  const suit = suitMap[cardStr.slice(-1)];
+  return { value, ...suit }
+};
+</script>
+
 <template>
-  <div class="flex flex-col items-center justify-between w-full h-full text-white">
-    <div class="w-full max-w-md mt-4">
-      <div class="flex justify-between text-xs mb-1">
-        <span>Hand {{ currentId }} / 100</span>
-        <span>Strategy: {{ selectedStrategy }}</span>
-      </div>
-      <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
-        <div class="bg-blue-500 h-full transition-all duration-500" :style="{ width: currentId + '%' }"></div>
-      </div>
-    </div>
-
-    <div class="relative w-full max-w-xl aspect-[4/3] bg-emerald-800 rounded-[100px] border-[12px] border-slate-800 flex flex-col items-center justify-center shadow-inner my-8">
-      <div v-if="scenario.board && scenario.board.length > 0" class="flex gap-2 mb-8">
-        <div v-for="card in scenario.board" :key="card" class="w-12 h-16 bg-white rounded shadow text-black flex items-center justify-center font-bold">
-          {{ card }}
-        </div>
-      </div>
+  <div class="max-w-md mx-auto">
+    <div class="aspect-video bg-emerald-800 rounded-[100px] border-[12px] border-slate-700 relative flex items-center justify-center shadow-2xl overflow-hidden">
+      <div class="absolute inset-4 border-2 border-emerald-700/50 rounded-[80px]"></div>
       
-      <div class="flex gap-4">
-        <div v-for="card in scenario.hand" :key="card" class="w-16 h-24 bg-white rounded-lg shadow-xl text-black flex items-center justify-center text-xl font-bold border-2 border-slate-300">
-          {{ card }}
+      <div class="flex space-x-2 z-10">
+        <div v-for="card in scenario.hand" :key="card" 
+             class="w-16 h-24 bg-white rounded-lg flex flex-col items-center justify-center shadow-xl border border-slate-200">
+          <span class="text-2xl font-bold leading-none" :class="formatCard(card).color">{{ formatCard(card).value }}</span>
+          <span class="text-3xl leading-none" :class="formatCard(card).color">{{ formatCard(card).symbol }}</span>
         </div>
       </div>
 
-      <div class="absolute bottom-6 bg-black/50 px-4 py-1 rounded-full text-sm">
-        Position: {{ scenario.position }}
+      <div class="absolute bottom-6 bg-slate-900/80 px-4 py-1 rounded-full border border-slate-600">
+        <span class="text-xs font-bold text-slate-300 uppercase tracking-tighter">Position:</span>
+        <span class="ml-2 text-sm font-black text-white">{{ scenario.position }}</span>
+      </div>
+
+      <div class="absolute top-6 right-6 bg-blue-600 px-3 py-1 rounded text-[10px] font-black uppercase">
+        {{ scenario.phase }}
       </div>
     </div>
 
-    <div class="grid grid-cols-3 gap-3 w-full max-w-md pb-8">
-      <button 
-        v-for="btn in actions" 
-        :key="btn" 
-        @click="$emit('action', btn)" 
-        class="bg-slate-100 text-slate-900 py-4 rounded-2xl font-black text-lg active:scale-95 transition-transform hover:bg-white disabled:opacity-50"
-        :disabled="!!result"
-      >
-        {{ btn }}
+    <div class="grid grid-cols-3 gap-2 mt-8">
+      <button v-for="a in ['FOLD', 'CHECK', 'CALL', 'BET', 'RAISE']" :key="a"
+              @click="emit('action', a)"
+              :disabled="disabled"
+              class="py-4 rounded-xl font-black transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none shadow-md"
+              :class="a === 'FOLD' ? 'bg-slate-700 hover:bg-slate-600' : 'bg-slate-100 text-slate-900 hover:bg-white'">
+        {{ a }}
       </button>
     </div>
-
-    <ResultOverlay 
-      v-if="result" 
-      :result="result" 
-      @next="$emit('next')" 
-    />
   </div>
 </template>
-
-<script setup>
-import ResultOverlay from './ResultOverlay.vue';
-
-const props = defineProps({
-  scenario: Object,
-  currentId: Number,
-  selectedStrategy: String,
-  result: Object
-});
-
-const emit = defineEmits(['action', 'next']);
-
-const actions = ['FOLD', 'CHECK', 'CALL', 'BET', 'RAISE'];
-</script>
