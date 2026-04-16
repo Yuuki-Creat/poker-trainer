@@ -1,4 +1,4 @@
-from .poker_logic import PokerLogic
+from poker_logic import PokerLogic
 class StrategyEngine:
     @staticmethod
     # def evaluate(user_action: str, scenario: dict, strategy: str) -> dict:
