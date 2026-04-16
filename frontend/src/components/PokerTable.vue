@@ -72,7 +72,6 @@ const formatCard = (cardStr) => {
         {{ btnAction }}
       </button>
     </div>
-
   </div>
 
   <div v-else class="h-64 flex flex-col items-center justify-center text-slate-500 italic">

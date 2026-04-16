@@ -31,17 +31,29 @@ const fetchScenarios = async () => {
   }
 };
 
-const nextHand = () => {
-  if (isGameOver.value) return;
+// const nextHand = () => {
+//   if (isGameOver.value) return;
 
-  const randomIndex = Math.floor(Math.random() * scenarios.value.length);
-  currentScenario.value = scenarios.value[randomIndex];
+//   const randomIndex = Math.floor(Math.random() * scenarios.value.length);
+//   currentScenario.value = scenarios.value[randomIndex];
+//   result.value = null;
+//   stats.value.currentHand++;
+// };
+
+const nextHand = () => {
+  if (stats.value.currentHand >= 100) return;
+
+  currentScenario.value = scenarios.value[Math.floor(Math.random() * scenarios.value.length)];
+
+  currentHand.value = generateRandomHand();
   result.value = null;
   stats.value.currentHand++;
-};
+}
 
 // アクション送信（判定）
 const submitAction = async (action) => {
+  if (result.value || isGameOver.value) return;
+
   try {
     const res = await fetch(`${baseUrl}/api/evaluate`, {
       method: 'POST',
@@ -49,7 +61,8 @@ const submitAction = async (action) => {
       body: JSON.stringify({
         scenario_id: currentScenario.value.id,
         user_action: action,
-        strategy_type: currentStrategy.value
+        strategy_type: currentStrategy.value,
+        dynamic_hand: currentHand.value
       })
     });
 
