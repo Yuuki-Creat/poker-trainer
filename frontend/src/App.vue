@@ -62,7 +62,7 @@ const submitAction = async (action) => {
         scenario_id: currentScenario.value.id,
         user_action: action,
         strategy_type: currentStrategy.value,
-        currentHand: currentHand.value
+        dynamic_hand: currentHand.value
       })
     });
 

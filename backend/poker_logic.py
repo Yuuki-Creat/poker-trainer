@@ -19,7 +19,7 @@ class PokerLogic:
 
     @staticmethod
     def is_in_range(hand: list, position: str, strategy: str) -> str:
-        if strategy != 'TAAG': return "GTO_FALLBACK"
+        if strategy != 'TAG': return "GTO_FALLBACK"
 
         r1, r2 = sorted([hand[0][0], hand[1][0]], key=lambda x: PokerLogic.RANKS.index(x), reverse=True)
         is_suited = hand[0][1] == hand[1][1]

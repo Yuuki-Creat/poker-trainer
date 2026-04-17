@@ -32,24 +32,33 @@ class StrategyEngine:
     #             "score": 0,
     #             "feedback": f"ミスです。{strategy}戦略での正解は {correct_action} でした。"
     #         }
-    def evaluate(user_action: str, scenario: dict, strategy: str, currentHand: list) -> dict:
-        if strategy == 'TAG' and scenario.get('phase') == 'Pre-flop':
-            correct_action = PokerLogic.is_in_range(currentHand, scenario['position'], 'TAG')
-        else:
-            solutions = scenario.get("solutions, {}")
-            correct_action = solutions.get(strategy, solutions.get("GTO", "FOLD"))
+    @staticmethod
+    def evaluate(user_action: str, scenario: dict, strategy: str) -> dict:
+        # JSON内の solutions キーを取得
+        all_solutions = scenario.get("solutions")
         
-        json_feedback = scenario.get("feedback", "")
+        if not all_solutions:
+            return {"status": "ERROR", "score": 0, "feedback": "判定データが見つかりません。"}
+
+        # フロントから届いた strategy (TAG/GTO等) をキーにして正解を取得
+        # もし指定された戦略がデータになければ GTO を、それもなければ FOLD をデフォルトに
+        correct_action = all_solutions.get(strategy)
         
-        if user_action == correct_action:
+        if not correct_action:
+            correct_action = all_solutions.get("GTO", "FOLD")
+
+        # ユーザーのアクションと比較（大文字小文字の揺れを防ぐため upper() 推奨）
+        is_correct = user_action.upper() == correct_action.upper()
+        
+        if is_correct:
             return {
                 "status": "GOOD",
                 "score": 100,
-                "feedback": f"Optimal! {json_feedback}"
+                "feedback": f"正解です！{strategy}戦略では {correct_action} が推奨されます。"
             }
-        
-        return {
-            "status": "BAD",
-            "score": 0,
-            "feedback": f"Not optimal. The best action was {correct_action}. {json_feedback}"
-        }
+        else:
+            return {
+                "status": "BAD",
+                "score": 0,
+                "feedback": f"ミスです。{strategy}戦略での正解は {correct_action} でした。"
+            }
