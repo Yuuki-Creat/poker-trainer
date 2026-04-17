@@ -32,9 +32,9 @@ class StrategyEngine:
     #             "score": 0,
     #             "feedback": f"ミスです。{strategy}戦略での正解は {correct_action} でした。"
     #         }
-    def evaluate(user_action: str, scenario: dict, strategy: str, current_hand: list) -> dict:
+    def evaluate(user_action: str, scenario: dict, strategy: str, currentHand: list) -> dict:
         if strategy == 'TAG' and scenario.get('phase') == 'Pre-flop':
-            correct_action = PokerLogic.is_in_range(current_hand, scenario['position'], 'TAG')
+            correct_action = PokerLogic.is_in_range(currentHand, scenario['position'], 'TAG')
         else:
             solutions = scenario.get("solutions, {}")
             correct_action = solutions.get(strategy, solutions.get("GTO", "FOLD"))

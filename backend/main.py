@@ -25,8 +25,6 @@ async def startup_event():
 @app.post("/api/evaluate", response_model=EvaluationResponse)
 async def evaluate(req: ActionRequest):
     scenario = storage.get_by_id(req.scenario_id)
-    print(f"DEBUG: Request Strategy: {req.strategy_type}")
-    print(f"DEBUG: Found Scenario: {scenario}")
     result = StrategyEngine.evaluate(req.user_action, scenario, req.strategy_type)
     
     return {
