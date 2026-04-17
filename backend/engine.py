@@ -33,7 +33,7 @@ class StrategyEngine:
     #             "feedback": f"ミスです。{strategy}戦略での正解は {correct_action} でした。"
     #         }
     @staticmethod
-    def evaluate(user_action: str, scenario: dict, strategy: str) -> dict:
+    def evaluate(user_action: str, scenario: dict, strategy: str, currentHand: str) -> dict:
         # JSON内の solutions キーを取得
         all_solutions = scenario.get("solutions")
         

@@ -10,6 +10,7 @@ const baseUrl = API_BASE.replace(/\/$/, "");
 const scenarios = ref([]);
 const currentScenario = ref(null);
 const currentStrategy = ref('TAG');
+const currentHand = ref([]);
 const result = ref(null);
 
 const stats = ref({
@@ -39,6 +40,19 @@ const fetchScenarios = async () => {
 //   result.value = null;
 //   stats.value.currentHand++;
 // };
+const generateRandomHand = () => {
+  const ranks = '23456789TJQKA';
+  const suits = 'shdc';
+  const deck = [];
+  for (let r of ranks) {
+    for (let s of suits) {
+      deck.push(`${r}${s}`);
+    }
+  }
+  // ランダムに2枚選ぶ
+  const shuffled = deck.sort(() => 0.5 - Math.random());
+  return [shuffled[0], shuffled[1]];
+};
 
 const nextHand = () => {
   if (stats.value.currentHand >= 100) return;
