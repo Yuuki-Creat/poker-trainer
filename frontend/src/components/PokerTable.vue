@@ -70,7 +70,7 @@ const formatCard = (cardStr) => {
         </div>
       </div>
 
-      <div class="absolute right-4 bottom-6 bg-slate-900/80 px-4 py-1 rounded-full border border-slate-600">
+      <div class="absolute right-7 bottom-6 bg-slate-900/80 px-4 py-1 rounded-full border border-slate-600">
         <span class="text-xs font-bold text-slate-300 uppercase tracking-tighter">Position:</span>
         <span class="ml-2 text-sm font-black text-white">{{ scenario.position }}</span>
       </div>
