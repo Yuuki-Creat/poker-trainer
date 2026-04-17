@@ -4,6 +4,11 @@ const props = defineProps({
     type: Object,
     default: null
   },
+  // 動的なハンド用
+  hand: {
+    type: Array,
+    default: () => []
+  },
   disabled: {
     type: Boolean,
     default: false
@@ -32,16 +37,27 @@ const formatCard = (cardStr) => {
 
 <template>
   <div v-if="scenario" class="max-w-md mx-auto p-4">
-
-    <div class="aspect-video bg-emerald-800 rounded-[100px] border-[12px] border-slate-700 relative flex items-center justify-center shadow-2xl mb-8">
+    <div class="aspect-video bg-emerald-800 rounded-[100px] border-[12px] border-slate-700 relative flex flex-col items-center justify-center shadow-2xl mb-8">
       <div class="absolute inset-4 border-2 border-emerald-700/50 rounded-[80px]"></div>
 
-      <div class="absolute top-6 right-8 bg-blue-600 px-3 py-1 rounded text-[10px] font-black uppercase text-white shadow-lg">
+      <div class="absolute top-6 right-8 bg-blue-600 px-3 py-1 rounded text-[10px] font-black uppercase text-white shadow-lg z-20">
         {{ scenario.phase }}
       </div>
 
+      <div v-if="scenario.board && scenario.board.length > 0" class="flex space-x-1 mb-4 z-10">
+        <div v-for="(cardStr, index) in scenario.board" :key="'board-'+index"
+             class="w-10 h-14 bg-white rounded-md flex flex-col items-center justify-center shadow-lg border border-slate-200">
+          <span class="text-sm font-black leading-none" :class="formatCard(cardStr).color">
+            {{ formatCard(cardStr).value }}
+          </span>
+          <span class="text-lg leading-none mt-0.5" :class="formatCard(cardStr).color">
+            {{ formatCard(cardStr).symbol }}
+          </span>
+        </div>
+      </div>
+
       <div class="flex space-x-3 z-10">
-        <div v-for="(cardStr, index) in scenario.hand" :key="index"
+        <div v-for="(cardStr, index) in (hand && hand.length > 0 ? hand : scenario.hand)" :key="'hand-'+index"
              class="w-16 h-24 bg-white rounded-lg flex flex-col items-center justify-center shadow-xl border border-slate-200">
           <template v-if="cardStr">
             <span class="text-2xl font-black leading-none" :class="formatCard(cardStr).color">
